@@ -32,7 +32,6 @@ int main(int argc, char *argv[]) {
 
     // Convert user ID string to integer using strtol()
     char *endptr;
-    errno = 0; // Reset errno before calling strtol()
     user_id = strtol(uid_input, &endptr, 10);
 
 
