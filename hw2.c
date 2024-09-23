@@ -12,37 +12,21 @@ int main(int argc, char *argv[]) {
     char buffer[BUFFER_SIZE];
     int user_id;
 
-    // Open the input file for reading
+    // opening input and outputs
     input_fd = open(argv[1], O_RDONLY);
     output_fd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
-    // Hardcoded full name
     char full_name[] = "Daniel Zhang";
+    user_id = getuid(); // uid call
+    
+    char output_buffer[100]; 
+    snprintf(output_buffer, sizeof(output_buffer), "%s %d\n", full_name, user_id);
 
-    // Get the user ID using the system call `getuid()`
-    user_id = getuid();
-
-    // Write the full name to the output file
-    bytes_written = write(output_fd, full_name, strlen(full_name));
-
-    // Write a space separator
-    bytes_written = write(output_fd, " ", 1);
-
-    // Write the user ID to the output file
-    char uid_str[20];
-    snprintf(uid_str, sizeof(uid_str), "%d", user_id);
-    bytes_written = write(output_fd, uid_str, strlen(uid_str));
-
-    // Write a newline character
-    bytes_written = write(output_fd, "\n", 1);
+    // Write the combined full name, user ID, and newline in one go
+    bytes_written = write(output_fd, output_buffer, strlen(output_buffer));
 
     // Copy the contents from the input file to the output file
     while ((bytes_read = read(input_fd, buffer, BUFFER_SIZE)) > 0) {
-        ssize_t total_written = 0;
-        while (total_written < bytes_read) {
-            bytes_written = write(output_fd, buffer + total_written, bytes_read - total_written);
-            total_written += bytes_written;
-        }
+        bytes_written = write(output_fd, buffer, bytes_read);
     }
 
     // Close the file descriptors
