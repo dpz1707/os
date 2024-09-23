@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include <errno.h> // Included for errno
+#include <errno.h> 
 
 #define BUFFER_SIZE 1024
 
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     char full_name[] = "Daniel Zhang";
 
     // Prompt the user to enter their user ID
-    const char prompt_msg[] = "Please enter your user ID: ";
+    const char prompt_msg[] = "Enter an integer";
     write(STDOUT_FILENO, prompt_msg, strlen(prompt_msg));
 
     // Read the user ID from terminal input using system calls
