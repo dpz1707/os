@@ -10,21 +10,20 @@ int main(int argc, char *argv[]) {
     char buffer[1024];  
     int myUid;
 
-    // open input and outputs, 
-    inputFile = open(argv[1], O_RDONLY); // only reading file 1
-    outputFile = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644); // opens, creates if not there, and truncates in case new information is shorter than previous information in file
+    // open input and output files
+    inputFile = open(argv[1], O_RDONLY);  // reading only from input file
+    outputFile = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);  // open, create if not exists, truncate for shorter data in input than already in output
     char myName[] = "Daniel Zhang";
     myUid = getuid();  
-
     char outputBuffer[100];
     snprintf(outputBuffer, sizeof(outputBuffer), "%s %d\n", myName, myUid);
 
-    // write name, uid, and adds a new line 
+    // write name, id, and new line
     writeBytes = write(outputFile, outputBuffer, strlen(outputBuffer));
 
     // input --> output
-    while ((readBytes = read(inputFile, buffer, 1024)) > 0) {  
-        writeBytes = write(outputFile, buffer, writeBytes);
+    while ((readBytes = read(inputFile, buffer, sizeof(buffer))) > 0) {
+        writeBytes = write(outputFile, buffer, readBytes);  
     }
 
     close(inputFile);
