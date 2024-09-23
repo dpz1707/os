@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include <errno.h> 
 
 #define BUFFER_SIZE 1024
 
@@ -23,7 +22,7 @@ int main(int argc, char *argv[]) {
     char full_name[] = "Daniel Zhang";
 
     // Prompt the user to enter their user ID
-    const char prompt_msg[] = "Enter an integer";
+    const char prompt_msg[] = "Please enter your user ID: ";
     write(STDOUT_FILENO, prompt_msg, strlen(prompt_msg));
 
     // Read the user ID from terminal input using system calls
@@ -60,12 +59,6 @@ int main(int argc, char *argv[]) {
         ssize_t total_written = 0;
         while (total_written < bytes_read) {
             bytes_written = write(output_fd, buffer + total_written, bytes_read - total_written);
-            if (bytes_written == -1) {
-                perror("Error writing data to output file");
-                close(input_fd);
-                close(output_fd);
-                exit(EXIT_FAILURE);
-            }
             total_written += bytes_written;
         }
     }
