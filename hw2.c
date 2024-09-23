@@ -4,34 +4,31 @@
 #include <fcntl.h>
 #include <string.h>
 
-#define BUFFER_SIZE 1024
-
 int main(int argc, char *argv[]) {
-    int input_fd, output_fd;
-    ssize_t bytes_read, bytes_written;
-    char buffer[BUFFER_SIZE];
-    int user_id;
+    int inputFile, outputFile;
+    ssize_t readBytes, writeBytes;
+    char buffer[1024];  
+    int myUid;
 
-    // opening input and outputs
-    input_fd = open(argv[1], O_RDONLY);
-    output_fd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    char full_name[] = "Daniel Zhang";
-    user_id = getuid(); // uid call
-    
-    char output_buffer[100]; 
-    snprintf(output_buffer, sizeof(output_buffer), "%s %d\n", full_name, user_id);
+    // open input and outputs, 
+    inputFile = open(argv[1], O_RDONLY); // only reading file 1
+    outputFile = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644); // opens, creates if not there, and truncates in case new information is shorter than previous information in file
+    char myName[] = "Daniel Zhang";
+    myUid = getuid();  
 
-    // Write the combined full name, user ID, and newline in one go
-    bytes_written = write(output_fd, output_buffer, strlen(output_buffer));
+    char outputBuffer[100];
+    snprintf(outputBuffer, sizeof(outputBuffer), "%s %d\n", myName, myUid);
 
-    // Copy the contents from the input file to the output file
-    while ((bytes_read = read(input_fd, buffer, BUFFER_SIZE)) > 0) {
-        bytes_written = write(output_fd, buffer, bytes_read);
+    // write name, uid, and adds a new line 
+    writeBytes = write(outputFile, outputBuffer, strlen(outputBuffer));
+
+    // input --> output
+    while ((readBytes = read(inputFile, buffer, 1024)) > 0) {  
+        writeBytes = write(outputFile, buffer, writeBytes);
     }
 
-    // Close the file descriptors
-    close(input_fd);
-    close(output_fd);
+    close(inputFile);
+    close(outputFile);
 
     return EXIT_SUCCESS;
 }
