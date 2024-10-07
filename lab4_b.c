@@ -11,7 +11,8 @@ int main() {
             exit(0);
         }
         exit(0);
-    } else {
+    } 
+    else {
         if (fork() == 0) {
             // child 2
             if (fork() == 0) {
