@@ -3,25 +3,29 @@
 #include <stdlib.h>
 
 int main() {
-    // parent
-    if (fork() == 0) { 
-        // child 1
-        if (fork() == 0) {
-            // child 3 
-            exit(0);
-        }
-        exit(0);
-    } 
-    else {
-        if (fork() == 0) {
-            // child 2
-            if (fork() == 0) {
-                // child 4
-                exit(0);
-            }
-            exit(0);
+    pid_t pid1, pid2, pid3, pid4;
+
+    pid1 = fork();
+    if (pid1 == 0) {  
+
+        pid3 = fork();
+        if (pid3 == 0) {  
+        } 
+        else {
+            sleep(1);
         }
     }
-    sleep(1);  // To prevent conflicts
+
+    pid2 = fork();
+    if (pid2 == 0) {  
+        pid4 = fork();
+        if (pid4 == 0) {  
+        } 
+        else {
+            sleep(1);
+        }
+    }
+
+    sleep(1);
     return 0;
 }
