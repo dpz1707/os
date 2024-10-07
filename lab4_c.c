@@ -7,12 +7,12 @@ int main(int argc, char *argv[]) {
     pid_t pid = fork();
 
     if (pid == 0) {  
-        unsigned long long a = 0, b = 1, temp;
+        unsigned long long a = 0, b = 1, holder;
         if (n >= 1){
-            printf("%llu\n", 0);
+            printf("%d\n", 0);
         }
         if (n >= 2){
-            printf("%llu\n", 1);  
+            printf("%d\n", 1);  
         }
 
         for (int i = 2; i < n; ++i) {
